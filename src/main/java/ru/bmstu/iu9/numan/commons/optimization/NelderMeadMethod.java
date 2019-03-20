@@ -19,16 +19,15 @@ public class NelderMeadMethod {
         double fr, fe, fs, dist, der;
         RealVector[] simplexDots = createSimplex(x0, EDGE_LEN, n);
         double[] fValues = getFuncValues(objectiveFunc, simplexDots);
+        int[] sortedDotsIndexes;
         RealVector xc, xr, xe, xs;
-
-        int[] sortedDotsIndexes = getSortedDotsIndexes(fValues);
-        li = sortedDotsIndexes[0];
-        gi = sortedDotsIndexes[1];
-        hi = sortedDotsIndexes[2];
-
 
         do {
             shrinkRequired = false;
+            sortedDotsIndexes = getSortedDotsIndexes(fValues);
+            li = sortedDotsIndexes[0];
+            gi = sortedDotsIndexes[1];
+            hi = sortedDotsIndexes[2];
 
             xc = findCenterOfMass(simplexDots, hi);
             xr = xc.add(xc.subtract(simplexDots[hi]).mapMultiply(ALPHA));
@@ -73,11 +72,6 @@ public class NelderMeadMethod {
                             fValues[i] = objectiveFunc.apply(simplexDots[i]);
                         }
                     }
-
-                    sortedDotsIndexes = getSortedDotsIndexes(fValues);
-                    li = sortedDotsIndexes[0];
-                    gi = sortedDotsIndexes[1];
-                    hi = sortedDotsIndexes[2];
                 }
             }
 
@@ -101,18 +95,6 @@ public class NelderMeadMethod {
         return simplexDots[li];
     }
 
-    private static RealVector findCenterOfMass(RealVector[] dots, int skipIndex) {
-        int n = dots.length;
-        RealVector xc = new ArrayRealVector(dots[0].getDimension(), 0.0);
-
-        for (int i = 0; i < n; i++) {
-            if (i != skipIndex)
-                xc = xc.add(dots[i]);
-        }
-
-        return xc.mapMultiply(1.0 / (n - 1));
-    }
-
     public static int[] getSortedDotsIndexes(double[] fValues) {
         int hi = 0, li = 1, gi = 2;
 
@@ -125,12 +107,24 @@ public class NelderMeadMethod {
             if (fValues[i] < fValues[li]) {
                 gi = li;
                 li = i;
-            } else if(fValues[i] < fValues[gi]) {
+            } else if (fValues[i] < fValues[gi]) {
                 gi = i;
             }
         }
 
         return new int[]{li, gi, hi};
+    }
+
+    private static RealVector findCenterOfMass(RealVector[] dots, int skipIndex) {
+        int n = dots.length;
+        RealVector xc = new ArrayRealVector(dots[0].getDimension(), 0.0);
+
+        for (int i = 0; i < n; i++) {
+            if (i != skipIndex)
+                xc = xc.add(dots[i]);
+        }
+
+        return xc.mapMultiply(1.0 / (n - 1));
     }
 
     private static double findMaxEdgeLen(RealVector[] dots) {

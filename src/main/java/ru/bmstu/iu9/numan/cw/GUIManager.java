@@ -54,11 +54,40 @@ public class GUIManager {
     @FXML
     private EnumChoiceBox<ChartType> chartTypeField;
 
+    private RealVector startVec;
+
+
+    @FXML
+    public void initialize() {
+        System.out.println("initialize ...");
+        startVec = new ArrayRealVector(new double[]{
+                // omega (0)
+                OMEGA_0,
+                // alpha (1)
+                ALPHA_0,
+                // m1 (2)
+                M1_0,
+                // c1 (3)
+                C1_0,
+                // b1 (4)
+                B1_0,
+                // m2 (5)
+                M2_0,
+                // c2 (6)
+                C2_0,
+                // b2 (7)
+                B2_0,
+                // f  (8)
+                F_0,
+        });
+        setFields(startVec);
+    }
+
 
     @FXML
     public void onShowClicked() {
         removeChart();
-        addChart();
+        addChart(getFieldValue(chartTypeField).label(), DT, true);
     }
 
     @FXML
@@ -117,7 +146,7 @@ public class GUIManager {
                 x -> findVecWithMaxCoord.apply(x).getEntry(1) - xi2Max
         );
 
-        double[] coordSteps = new double[] {
+        double[] coordSteps = new double[]{
                 OMEGA_STEP,
                 ALPHA_STEP,
                 M1_STEP,
@@ -128,27 +157,6 @@ public class GUIManager {
                 B2_STEP,
                 F_STEP
         };
-
-        RealVector startVec = new ArrayRealVector(new double[]{
-                // omega (0)
-                omegaMin + coordSteps[0],
-                // alpha (1)
-                alphaMin + coordSteps[1],
-                // m1 (2)
-                m1Min + coordSteps[2],
-                // c1 (3)
-                c1Min + coordSteps[3],
-                // b1 (4)
-                b1Min + coordSteps[4],
-                // m2 (5)
-                m2Min + coordSteps[5],
-                // c2 (6)
-                c2Min + coordSteps[6],
-                // b2 (7)
-                b2Min + coordSteps[7],
-                // f  (8)
-                fMin + coordSteps[8],
-        });
 
         ArrayList<Double> weights = new ArrayList<>();
         for (int i = 0; i < constraints.size(); i++) {
@@ -164,17 +172,22 @@ public class GUIManager {
                 coordSteps,
                 startVec
         );
-        System.out.println("Optimal params: " + optimalParams);
 
-        frequencyField.setText(String.valueOf(optimalParams.getEntry(0)));
-        phaseShiftField.setText(String.valueOf(optimalParams.getEntry(1)));
-        platformMassField.setText(String.valueOf(optimalParams.getEntry(2)));
-        platformElasticityField.setText(String.valueOf(optimalParams.getEntry(3)));
-        platformDampingField.setText(String.valueOf(optimalParams.getEntry(4)));
-        blockMassField.setText(String.valueOf(optimalParams.getEntry(5)));
-        blockElasticityField.setText(String.valueOf(optimalParams.getEntry(6)));
-        blockDampingField.setText(String.valueOf(optimalParams.getEntry(7)));
-        amplitudeForceField.setText(String.valueOf(optimalParams.getEntry(8)));
+        setFields(optimalParams);
+
+        addChart(getFieldValue(chartTypeField).label() + " (после оптимизации)", DT, false);
+    }
+
+    private void setFields(RealVector params) {
+        frequencyField.setText(String.valueOf(params.getEntry(0)));
+        phaseShiftField.setText(String.valueOf(params.getEntry(1)));
+        platformMassField.setText(String.valueOf(params.getEntry(2)));
+        platformElasticityField.setText(String.valueOf(params.getEntry(3)));
+        platformDampingField.setText(String.valueOf(params.getEntry(4)));
+        blockMassField.setText(String.valueOf(params.getEntry(5)));
+        blockElasticityField.setText(String.valueOf(params.getEntry(6)));
+        blockDampingField.setText(String.valueOf(params.getEntry(7)));
+        amplitudeForceField.setText(String.valueOf(params.getEntry(8)));
     }
 
     private void removeChart() {
@@ -182,7 +195,7 @@ public class GUIManager {
     }
 
     @SuppressWarnings("Duplicates")
-    private void addChart() {
+    private void addChart(String label, double dt, boolean changeChartUnits) {
         try {
             ChartType chartType = getFieldValue(chartTypeField);
             double duration = getFieldValue(durationField);
@@ -194,39 +207,24 @@ public class GUIManager {
             );
             int dotsCount = solVectorsList.size();
 
-            printFunctionPeaks(chartType.ordinal(), solVectorsList);
+//            printFunctionPeaks(chartType.ordinal(), solVectorsList);
 
             double[] x = new double[dotsCount];
             double[] y = new double[dotsCount];
 
             for (int i = 0; i < dotsCount; i++) {
-                x[i] = DT * i;
+                x[i] = dt * i;
                 y[i] = solVectorsList.get(i).getEntry(chartType.ordinal());
             }
 
-            addDataSeries(chartType.label(), chartType.xAxis(), chartType.yAxis(), x, y);
-            System.out.println(1);
+            addDataSeries(label == null ? chartType.label() : label, chartType.xAxis(), chartType.yAxis(), x, y, changeChartUnits);
         } catch (InvalidFieldException e) {
             e.printStackTrace();
             showError("Некорректно заполнено поле", e.getMessage());
         }
     }
 
-    private static void printFunctionPeaks(int chartType, List<RealVector> solVectorsList) {
-        double left, middle, right;
-        for (int i = 2; i < solVectorsList.size(); i++) {
-            left = solVectorsList.get(i - 2).getEntry(chartType);
-            middle = solVectorsList.get(i - 1).getEntry(chartType);
-            right = solVectorsList.get(i).getEntry(chartType);
-
-            if(middle > left && middle < right) {
-                System.out.printf("y[%d](%.3f) = %.3f%n", i - 1, (i - 1) * DT, middle);
-            }
-
-        }
-    }
-
-    private void addDataSeries(String chartLabel, String xAxisLabel, String yAxisLabel, double[] x, double[] y) {
+    private void addDataSeries(String chartLabel, String xAxisLabel, String yAxisLabel, double[] x, double[] y, boolean changeChartUnits) {
         XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
 
         NumberAxis xAxis = (NumberAxis) chart.getXAxis();
@@ -238,33 +236,39 @@ public class GUIManager {
 
         dataSeries.setName(chartLabel);
 
-        setAxisInfo(xAxisLabel, xAxis, x);
-        xAxis.setTickLabelRotation(-90.0);
-        xAxis.setTickLabelGap(0.01);
-        xAxis.setTickUnit(0.025);
 
-        setAxisInfo(yAxisLabel, yAxis, y);
-        yAxis.setTickLabelGap(0.05);
-        yAxis.setTickUnit(0.05);
+        if(changeChartUnits) {
+            xAxis.setTickLabelRotation(-90.0);
+            xAxis.setTickLabelGap(0.01);
+            xAxis.setTickUnit(0.025);
+
+            yAxis.setTickLabelGap(0.05);
+            yAxis.setTickUnit(0.05);
+            setAxisInfo(xAxisLabel, xAxis, x, true);
+            setAxisInfo(yAxisLabel, yAxis, y, true);
+        }
 
         chart.getData().add(dataSeries);
     }
 
-    private void setAxisInfo(String label, NumberAxis axis, double[] axisValues) {
+    private void setAxisInfo(String label, NumberAxis axis, double[] axisValues, boolean changeChartUnits) {
         axis.setLabel(label);
-        DoubleStream axisValuesStream = Arrays.stream(axisValues);
-        OptionalDouble minOpt = axisValuesStream.min();
-        axisValuesStream = Arrays.stream(axisValues);
 
-        OptionalDouble maxOpt = axisValuesStream.max();
-        if (minOpt.isPresent()) {
-            axis.setLowerBound(minOpt.getAsDouble());
+        if(changeChartUnits) {
+            DoubleStream axisValuesStream = Arrays.stream(axisValues);
+            OptionalDouble minOpt = axisValuesStream.min();
+            axisValuesStream = Arrays.stream(axisValues);
+
+            OptionalDouble maxOpt = axisValuesStream.max();
+            if (minOpt.isPresent()) {
+                axis.setLowerBound(minOpt.getAsDouble());
+            }
+            if (maxOpt.isPresent()) {
+                axis.setUpperBound(maxOpt.getAsDouble());
+            }
+            axis.setAutoRanging(false);
+            axis.setMinorTickVisible(false);
         }
-        if (maxOpt.isPresent()) {
-            axis.setUpperBound(maxOpt.getAsDouble());
-        }
-        axis.setAutoRanging(false);
-        axis.setMinorTickVisible(false);
     }
 
     private void showError(String title, String message) {
@@ -288,6 +292,20 @@ public class GUIManager {
         });
 
         return (t, x) -> getDeRhsVec(t, paramVec, x);
+    }
+
+    private static void printFunctionPeaks(int chartType, List<RealVector> solVectorsList) {
+        double left, middle, right;
+        for (int i = 2; i < solVectorsList.size(); i++) {
+            left = solVectorsList.get(i - 2).getEntry(chartType);
+            middle = solVectorsList.get(i - 1).getEntry(chartType);
+            right = solVectorsList.get(i).getEntry(chartType);
+
+            if (middle > left && middle < right) {
+                System.out.printf("y[%d](%.3f) = %.3f%n", i - 1, (i - 1) * DT, middle);
+            }
+
+        }
     }
 
     private static double getFieldValue(TextField textField) {
@@ -329,8 +347,8 @@ public class GUIManager {
         return new ArrayRealVector(new double[]{
                 eta1,
                 eta2,
-                (2 * b1 * eta1 - 2 * c1 * xi1 + c2 * dXi - b2 * (eta2 - eta1) + f * cos(omega * t + alpha)) / m,
-                (b2 * (eta2 - eta1) - c2 * dXi) / m2
+                (2 * b1 * eta1 - 2 * c1 * xi1 + c2 * dXi + f * cos(omega * t + alpha)) / m,
+                (b2 * eta2 - c2 * dXi) / m2
         });
     }
 

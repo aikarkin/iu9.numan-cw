@@ -83,6 +83,16 @@ public class Const {
         DynamicVibrationDamper.alphaMin = valueOf((String) prop.get("optimization.dvd.alpha.min"));
         DynamicVibrationDamper.alphaMax = valueOf((String) prop.get("optimization.dvd.alpha.max"));
         DynamicVibrationDamper.xi2Max = valueOf((String) prop.get("optimization.dvd.xi2.max"));
+
+        DynamicVibrationDamper.OMEGA_0 = valueOf((String) prop.get("optimization.dvd.omega0"));
+        DynamicVibrationDamper.ALPHA_0 = valueOf((String) prop.get("optimization.dvd.alpha0"));
+        DynamicVibrationDamper.M1_0 = valueOf((String) prop.get("optimization.dvd.m10"));
+        DynamicVibrationDamper.C1_0 = valueOf((String) prop.get("optimization.dvd.c10"));
+        DynamicVibrationDamper.B1_0 = valueOf((String) prop.get("optimization.dvd.b10"));
+        DynamicVibrationDamper.M2_0 = valueOf((String) prop.get("optimization.dvd.m20"));
+        DynamicVibrationDamper.C2_0 = valueOf((String) prop.get("optimization.dvd.c20"));
+        DynamicVibrationDamper.B2_0 = valueOf((String) prop.get("optimization.dvd.b20"));
+        DynamicVibrationDamper.F_0 = valueOf((String) prop.get("optimization.dvd.f0"));
     }
 
     public static class RungeKutta {
@@ -140,6 +150,15 @@ public class Const {
         public static double alphaMin;
         public static double alphaMax;
         public static double xi2Max;
+        public static double OMEGA_0;
+        public static double ALPHA_0;
+        public static double M1_0;
+        public static double C1_0;
+        public static double B1_0;
+        public static double M2_0;
+        public static double C2_0;
+        public static double B2_0;
+        public static double F_0;
 
     }
 

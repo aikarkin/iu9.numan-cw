@@ -8,5 +8,5 @@
   -fx-padding: 5px;
 }
 
-.default-color0.chart-series-line { -fx-background-color: #7b98ae; }
-.default-color1.chart-series-line { -fx-background-color: #f0e68c; }
+.default-color0.chart-symbol  { -fx-background-color: #FF8100; }
+.default-color1.chart-symbol  { -fx-background-color: #0FACF3; }
