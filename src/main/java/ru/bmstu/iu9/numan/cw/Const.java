@@ -27,6 +27,19 @@ public class Const {
         PenaltyMethod.BETA = valueOf((String) prop.get("optimization.penalty.beta"));
         PenaltyMethod.R0 = valueOf((String) prop.get("optimization.penalty.r0"));
 
+
+        NelderMeadMethod.ALPHA = valueOf((String) prop.get("optimization.nm.reflection"));
+        NelderMeadMethod.BETA = valueOf((String) prop.get("optimization.nm.shrink"));
+        NelderMeadMethod.GAMMA = valueOf((String) prop.get("optimization.nm.dilation"));
+        NelderMeadMethod.MU = valueOf((String) prop.get("optimization.nm.reduction"));
+        NelderMeadMethod.PSI = valueOf((String) prop.get("optimization.nm.minDistortionAngle"));
+        NelderMeadMethod.EDGE_LEN = valueOf((String) prop.get("optimization.nm.startEdgeLen"));
+        NelderMeadMethod.SIMPLEX_REPAIR_STEP = valueOf((String) prop.get("optimization.nm.simplexRepairStep"));
+        NelderMeadMethod.MAX_ITERATIONS = Integer.valueOf((String) prop.get("optimization.nm.maxIter"));
+        NelderMeadMethod.SIGMA = valueOf((String) prop.get("optimization.nm.minEdgeLen"));
+        NelderMeadMethod.EPS = valueOf((String) prop.get("optimization.nm.minStandardDeviation"));
+
+
         PatternSearch.EPS = valueOf((String) prop.get("optimization.ps.eps"));
         PatternSearch.SIGMA = valueOf((String) prop.get("optimization.ps.sigma"));
         PatternSearch.ALPHA = valueOf((String) prop.get("optimization.ps.alpha"));
@@ -127,6 +140,22 @@ public class Const {
         public static double alphaMin;
         public static double alphaMax;
         public static double xi2Max;
+
+    }
+
+    public static class NelderMeadMethod {
+
+        public static double ALPHA;
+        public static double BETA;
+        public static double GAMMA;
+        public static double MU;
+        public static double PSI;
+        public static double EDGE_LEN;
+
+        public static double SIMPLEX_REPAIR_STEP;
+        public static double SIGMA;
+        public static double EPS;
+        public static int MAX_ITERATIONS;
 
     }
 
