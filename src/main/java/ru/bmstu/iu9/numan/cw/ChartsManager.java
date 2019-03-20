@@ -27,7 +27,7 @@ import static ru.bmstu.iu9.numan.cw.Const.PatternSearch.*;
 import static ru.bmstu.iu9.numan.cw.Const.RungeKutta.*;
 import static ru.bmstu.iu9.numan.cw.Const.DynamicVibrationDamper.*;
 
-public class GUIManager {
+public class ChartsManager {
 
     @FXML
     private ScatterChart<Number, Number> chart;

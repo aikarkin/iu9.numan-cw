@@ -15,7 +15,25 @@ import java.net.URL;
 public class RunApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final URL fxmlRes = getClass().getClassLoader().getResource("layout.fxml");
+        final URL fxmlRes = getClass().getClassLoader().getResource("params-configurer.fxml");
+
+        if(fxmlRes == null) {
+            System.out.println("[error] Failed to start GUI - params-configurer.xml not found");
+            return;
+        }
+
+        Parent root = FXMLLoader.load(fxmlRes);
+//        primaryStage.setTitle("График зависимости координаты платформы от времени (x1 = f(t))");
+        primaryStage.setResizable(false);
+        Scene scene = new Scene(root, -1, -1);
+        scene.getStylesheets().add("styles.css");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void showChartsWindow(Stage stage) throws IOException {
+        final URL fxmlRes = getClass().getClassLoader().getResource("charts.fxml");
 
         if(fxmlRes == null) {
             System.out.println("[error] Failed to start GUI - layout.xml not found");
@@ -23,13 +41,13 @@ public class RunApplication extends Application {
         }
 
         Parent root = FXMLLoader.load(fxmlRes);
-        primaryStage.setTitle("График зависимости координаты платформы от времени (x1 = f(t))");
-        primaryStage.setResizable(false);
+        stage.setTitle("График зависимости координаты платформы от времени (x1 = f(t))");
+        stage.setResizable(false);
         Scene scene = new Scene(root, -1, -1);
         scene.getStylesheets().add("styles.css");
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.show();
 
         Node chartTypeObj = root.lookup("#chartTypeField");
 
