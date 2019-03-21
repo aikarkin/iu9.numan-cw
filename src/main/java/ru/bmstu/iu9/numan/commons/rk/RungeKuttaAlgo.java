@@ -5,10 +5,8 @@ import org.apache.commons.math3.linear.RealVector;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.bmstu.iu9.numan.cw.Const.RungeKutta.DT;
-
 public class RungeKuttaAlgo {
-    public static List<RealVector> rungeKutta(ParamEq f, RungeKuttaPredicate exitPredicate, RealVector y0) {
+    public static List<RealVector> rungeKutta(ParamEq f, RungeKuttaPredicate exitPredicate, RealVector y0, double dt) {
         RealVector k1, k2, k3, k4;
         ArrayList<RealVector> yArr = new ArrayList<>();
         yArr.add(y0);
@@ -17,16 +15,16 @@ public class RungeKuttaAlgo {
         int i = 0;
 
         do {
-            t = i * DT;
+            t = i * dt;
             RealVector yn = yArr.get(i);
 
-            k1 = f.apply(t, yn).mapMultiply(DT);
-            k2 = f.apply(t + DT / 2.0, yn.add(k1.mapMultiply(0.5)))
-                    .mapMultiply(DT);
-            k3 = f.apply(t + DT / 2.0, yn.add(k2.mapMultiply(0.5)))
-                    .mapMultiply(DT);
-            k4 = f.apply(t + DT,yn.add(k3))
-                    .mapMultiply(DT);
+            k1 = f.apply(t, yn).mapMultiply(dt);
+            k2 = f.apply(t + dt / 2.0, yn.add(k1.mapMultiply(0.5)))
+                    .mapMultiply(dt);
+            k3 = f.apply(t + dt / 2.0, yn.add(k2.mapMultiply(0.5)))
+                    .mapMultiply(dt);
+            k4 = f.apply(t + dt,yn.add(k3))
+                    .mapMultiply(dt);
 
             yArr.add(yn
                     .add(k1

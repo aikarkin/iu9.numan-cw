@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.bmstu.iu9.numan.cw.controller.ConfigurationManager">
+
+
+    <GridPane fx:id="mainPane" alignment="center" hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints />
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints maxHeight="273.0" minHeight="194.0" prefHeight="240.0" />
+            <!--<RowConstraints maxHeight="117.0" minHeight="38.0" prefHeight="71.0" />-->
+         <RowConstraints />
+        </rowConstraints>
+        <children>
+            <TitledPane animated="false" collapsible="false" text="Начальная точка" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="0">
+                <content>
+                    <GridPane alignment="center" prefHeight="132.0" prefWidth="452.0">
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+
+                        <!--first row:-->
+                        <Label text="m1:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="m1Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="b1:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="b1Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b10" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="c1:" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="c1Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c10" GridPane.columnIndex="5" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+
+                        <!--second row:-->
+                        <Label text="m2:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="m2Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m20" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="b2:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="b2Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b20" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="c2:" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="c2Field" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c20" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                    </GridPane>
+                </content>
+            </TitledPane>
+            <TitledPane animated="false" collapsible="false" text="Внешяя сила" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="1">
+                <content>
+                    <GridPane alignment="center">
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                        </rowConstraints>
+
+                        <!--first row:-->
+                        <Label text="fA:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="fAField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.fA" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="omega:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="omegaField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.omega" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="alpha:" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="alphaField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.alpha" GridPane.columnIndex="5" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="40.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <TitledPane animated="false" collapsible="false" text="Ограничения" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="2">
+                <content>
+                    <GridPane alignment="center">
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+
+                        <!--first row: -->
+                        <TextField id="m1MinField" fx:id="m1MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m1.min" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ m1 ≦ " GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="m1MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m1.max" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <TextField fx:id="m2MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m2.min" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ m2 ≦ " GridPane.columnIndex="4" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="m2MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.m2.max" GridPane.columnIndex="5" GridPane.rowIndex="0">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+
+                        <!--second row-->
+                        <TextField fx:id="b1MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b1.min" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ b1 ≦ " GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="b1MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b1.max" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <TextField fx:id="b2MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b2.min" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ b2 ≦ " GridPane.columnIndex="4" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="b2MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.b2.max" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+
+                        <!--third row-->
+                        <TextField fx:id="c1MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c1.min" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ c1 ≦ " GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="c1MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c1.max" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <TextField fx:id="c2MinField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c2.min" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ c2 ≦ " GridPane.columnIndex="4" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="c2MaxField" maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.c2.max" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                        <Label text="xi2 ≦ " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <TextField maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.xi2.max" GridPane.columnIndex="3" GridPane.rowIndex="3" fx:id="xi2MaxField">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <Button alignment="center" mnemonicParsing="false" onAction="#onOptimizeClicked" text="Оптимизировать" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                <GridPane.margin>
+                    <Insets bottom="15.0" left="20.0" right="20" top="30.0" />
+                </GridPane.margin>
+            </Button>
+
+        </children>
+    </GridPane>
+
+    <ProgressIndicator fx:id="progressSpinner" disable="true" maxHeight="100.0" maxWidth="100.0" prefWidth="150.0" visible="false">
+        <StackPane.margin>
+            <Insets />
+        </StackPane.margin>
+    </ProgressIndicator>
+</StackPane>

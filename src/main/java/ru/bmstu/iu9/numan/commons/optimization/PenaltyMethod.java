@@ -48,7 +48,6 @@ public class PenaltyMethod {
         return x;
     }
 
-
     private static void checkConstraintsForPoint(List<Function<RealVector, Double>> constraints, RealVector x) {
         for (int i = 0; i < constraints.size(); i++) {
             if (constraints.get(i).apply(x) >= 0) {

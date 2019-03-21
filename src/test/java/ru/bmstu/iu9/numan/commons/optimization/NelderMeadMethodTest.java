@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.function.Function;
 
-import static java.lang.Math.pow;
 import static org.testng.Assert.*;
 
 public class NelderMeadMethodTest {

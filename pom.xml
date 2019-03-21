@@ -12,7 +12,7 @@
     <properties>
         <java.source>1.8</java.source>
         <java.target>1.8</java.target>
-        <jar.executable.class>ru.bmstu.iu9.numan.cw.RunApplication</jar.executable.class>
+        <jar.executable.class>ru.bmstu.iu9.numan.cw.FxApplication</jar.executable.class>
         <jar.lib.path>libs/</jar.lib.path>
     </properties>
 

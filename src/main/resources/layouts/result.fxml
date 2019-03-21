@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import ru.bmstu.iu9.numan.fx.EnumChoiceBox?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ProgressIndicator?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea"
+           fx:controller="ru.bmstu.iu9.numan.cw.controller.OptimizationResultsManager">
+
+    <GridPane fx:id="mainPane">
+        <fx:define>
+            <fx:include visible="false" fx:id="paramsManager" source="params.fxml"/>
+        </fx:define>
+
+        <columnConstraints>
+            <ColumnConstraints maxWidth="251.0" minWidth="146.0" prefWidth="250.0"/>
+            <ColumnConstraints maxWidth="354.0" minWidth="249.0" prefWidth="250.0"/>
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+        </rowConstraints>
+
+        <children>
+            <TitledPane collapsible="false" prefWidth="500.0" text="Начальные параметры" GridPane.columnIndex="0"
+                        GridPane.columnSpan="2" GridPane.rowIndex="0">
+                <content>
+                    <GridPane alignment="center">
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                        </columnConstraints>
+
+                        <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                        </rowConstraints>
+
+                        <children>
+                            <!--row #1-->
+                            <Label text="m1:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="m1Value" minWidth="30.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="c1:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="c1Value" minWidth="30.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="b1:" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="b1Value" minWidth="30.0" GridPane.columnIndex="5" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <!--row #2-->
+                            <Label text="m2:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="m2Value" minWidth="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="c2:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="c2Value" minWidth="30.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="b2:" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="b2Value" minWidth="30.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                        </children>
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <TitledPane animated="false" collapsible="false" prefWidth="500.0" text="Оптимальные параметры"
+                        GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <content>
+                    <GridPane alignment="center">
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                        </columnConstraints>
+
+                        <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                        </rowConstraints>
+
+                        <children>
+                            <!--row #1-->
+                            <Label text="m1:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="m1OptValue" minWidth="30.0" text="?" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="c1:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="c1OptValue" minWidth="30.0" text="?" GridPane.columnIndex="3"
+                                   GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="b1:" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="b1OptValue" minWidth="30.0" text="?" GridPane.columnIndex="5"
+                                   GridPane.rowIndex="0">
+                                <GridPane.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <!--row #2-->
+                            <Label text="m2:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="m2OptValue" minWidth="30.0" text="?" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="c2:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="c2OptValue" minWidth="30.0" text="?" GridPane.columnIndex="3"
+                                   GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="b2:" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="30.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="b2OptValue" minWidth="30.0" text="?" GridPane.columnIndex="5"
+                                   GridPane.rowIndex="1">
+                                <GridPane.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                </GridPane.margin>
+                            </Label>
+                        </children>
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <EnumChoiceBox fx:id="chartTypeField" enumType="ru.bmstu.iu9.numan.fx.ChartType" prefWidth="100.0"
+                           GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets bottom="25.0" left="20.0" right="20.0" top="20.0"/>
+                </GridPane.margin>
+            </EnumChoiceBox>
+
+            <Button fx:id="displayChartBtn" alignment="center" mnemonicParsing="false" onAction="#onShowChartsClicked" text="Построить график"
+                    GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets bottom="25.0" left="20.0" right="20.0" top="20.0"/>
+                </GridPane.margin>
+            </Button>
+        </children>
+    </GridPane>
+
+    <!--<ProgressIndicator fx:id="chartProgress" disable="true" maxHeight="100.0" maxWidth="100.0" prefWidth="150.0" visible="false">-->
+        <!--<StackPane.margin>-->
+            <!--<Insets />-->
+        <!--</StackPane.margin>-->
+    <!--</ProgressIndicator>-->
+</StackPane>
