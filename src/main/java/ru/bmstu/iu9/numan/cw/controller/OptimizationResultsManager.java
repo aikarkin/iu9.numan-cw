@@ -7,7 +7,6 @@ import javafx.scene.layout.GridPane;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import ru.bmstu.iu9.numan.cw.FxWindows;
-import ru.bmstu.iu9.numan.cw.task.ChartDrawingTask;
 import ru.bmstu.iu9.numan.fx.ChartType;
 import ru.bmstu.iu9.numan.fx.EnumChoiceBox;
 

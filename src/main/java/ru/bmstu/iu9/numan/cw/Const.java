@@ -35,20 +35,17 @@ public class Const {
         PatternSearch.ALPHA = valueOf((String) prop.get("ps.alpha"));
         PatternSearch.LAMBDA = valueOf((String) prop.get("ps.lambda"));
 
-        PatternSearch.OMEGA_STEP = valueOf((String) prop.get("ps.omegaStep"));
-        PatternSearch.ALPHA_STEP = valueOf((String) prop.get("ps.alphaStep"));
         PatternSearch.M1_STEP = valueOf((String) prop.get("ps.m1Step"));
-        PatternSearch.M2_STEP = valueOf((String) prop.get("ps.m2Step"));
         PatternSearch.C1_STEP = valueOf((String) prop.get("ps.c1Step"));
-        PatternSearch.C2_STEP = valueOf((String) prop.get("ps.c2Step"));
         PatternSearch.B1_STEP = valueOf((String) prop.get("ps.b1Step"));
+        PatternSearch.M2_STEP = valueOf((String) prop.get("ps.m2Step"));
+        PatternSearch.C2_STEP = valueOf((String) prop.get("ps.c2Step"));
         PatternSearch.B2_STEP = valueOf((String) prop.get("ps.b2Step"));
-        PatternSearch.F_STEP = valueOf((String) prop.get("ps.fStep"));
 
-        NelderMeadMethod.ALPHA = valueOf((String) prop.get("nm.reflection"));
-        NelderMeadMethod.BETA = valueOf((String) prop.get("nm.shrink"));
-        NelderMeadMethod.GAMMA = valueOf((String) prop.get("nm.dilation"));
-        NelderMeadMethod.MU = valueOf((String) prop.get("nm.reduction"));
+        NelderMeadMethod.ALPHA = valueOf((String) prop.get("nm.alpha"));
+        NelderMeadMethod.BETA = valueOf((String) prop.get("nm.beta"));
+        NelderMeadMethod.GAMMA = valueOf((String) prop.get("nm.gamma"));
+        NelderMeadMethod.MU = valueOf((String) prop.get("nm.mu"));
         NelderMeadMethod.PSI = valueOf((String) prop.get("nm.minDistortionAngle"));
         NelderMeadMethod.EDGE_LEN = valueOf((String) prop.get("nm.startEdgeLen"));
         NelderMeadMethod.SIMPLEX_REPAIR_STEP = valueOf((String) prop.get("nm.simplexRepairStep"));
@@ -74,15 +71,12 @@ public class Const {
 
     public static class PatternSearch {
 
-        public static double OMEGA_STEP;
-        public static double ALPHA_STEP;
         public static double M1_STEP;
         public static double M2_STEP;
         public static double C1_STEP;
         public static double C2_STEP;
         public static double B1_STEP;
         public static double B2_STEP;
-        public static double F_STEP;
 
         public static double SIGMA;
         public static double EPS;

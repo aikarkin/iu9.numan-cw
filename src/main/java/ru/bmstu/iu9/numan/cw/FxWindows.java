@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.DoubleStream;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static ru.bmstu.iu9.numan.cw.DynamicDamperUtils.getDeRhsVec;
 import static ru.bmstu.iu9.numan.cw.Const.Charts;
@@ -101,32 +102,35 @@ public class FxWindows {
 
         xAxis.setLabel(chartType.xAxis());
         xAxis.setTickLabelRotation(-90.0);
-        xAxis.setTickLabelGap(0.01);
-        xAxis.setTickUnit(0.025);
-        xAxis.setLowerBound(0.0);
-        xAxis.setUpperBound(Charts.DURATION);
+        setAxisUnits(xAxis, x);
 
         yAxis.setLabel(chartType.yAxis());
-        yAxis.setTickLabelGap(0.05);
-        yAxis.setTickUnit(0.05);
-        setAxisRange(yAxis, yStart);
+        setAxisUnits(yAxis, yStart);
     }
 
-    private static void setAxisRange(NumberAxis axis, double[] axisValues) {
+    private static void setAxisUnits(NumberAxis axis, double[] axisValues) {
         DoubleStream axisValuesStream = Arrays.stream(axisValues);
         OptionalDouble minOpt = axisValuesStream.min();
         axisValuesStream = Arrays.stream(axisValues);
 
+        double max = axisValues[0];
+
         OptionalDouble maxOpt = axisValuesStream.max();
         if (minOpt.isPresent()) {
+            if(abs(minOpt.getAsDouble()) > max)
+                max = abs(minOpt.getAsDouble());
             axis.setLowerBound(minOpt.getAsDouble());
         }
         if (maxOpt.isPresent()) {
             axis.setUpperBound(maxOpt.getAsDouble());
+            if(abs(maxOpt.getAsDouble()) > max)
+                max = abs(maxOpt.getAsDouble());
         }
         axis.setAutoRanging(false);
         axis.setMinorTickVisible(false);
 
+        axis.setTickLabelGap(max / 5.0);
+        axis.setTickUnit(max / 10.0);
     }
 
     private static void addDataSeries(ScatterChart<Number, Number> chart, String chartLabel, double[] x, double[] y) {

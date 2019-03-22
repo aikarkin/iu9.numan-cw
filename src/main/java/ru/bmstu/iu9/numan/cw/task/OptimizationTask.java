@@ -75,20 +75,17 @@ public class OptimizationTask extends Task<Map<String, Object>> {
         );
 
         double[] coordSteps = new double[]{
-                OMEGA_STEP,
-                ALPHA_STEP,
                 M1_STEP,
                 C1_STEP,
                 B1_STEP,
                 M2_STEP,
                 C2_STEP,
-                B2_STEP,
-                F_STEP
+                B2_STEP
         };
 
         List<Double> weights = new ArrayList<>();
         for (int i = 0; i < constraints.size(); i++) {
-            weights.add(1.5);
+            weights.add(2.0);
         }
 
         weights.set(constraints.size() - 1, 1.0);

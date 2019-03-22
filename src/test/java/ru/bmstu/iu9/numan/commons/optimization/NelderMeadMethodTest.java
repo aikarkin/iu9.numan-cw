@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.function.Function;
 
+import static java.lang.Math.pow;
 import static org.testng.Assert.*;
 
 public class NelderMeadMethodTest {
@@ -28,29 +29,34 @@ public class NelderMeadMethodTest {
     }
 
     @Test
-    public void testOptimizeWithNelderMead() {
-//        Function<RealVector, Double> objectiveFunc = vec -> {
-//            double x = vec.getEntry(0), y = vec.getEntry(1);
-//            return pow(pow(x, 2.0) + 3.0, 2.0) - pow(pow(y, 2.0) + 2.0, 2.0) - 10;
-//        };
-
+    public void testOptimizeWithNelderMead1() {
         Function<RealVector, Double> objectiveFunc = (vec) -> {
             double x = vec.getEntry(0), y = vec.getEntry(1);
-            return x * x + x * y + y * y - 6 * x - 9 * y;
+            return 10.0 * pow(y - pow(x, 2.0), 2.0) + pow(1.0 - x, 2.0);
         };
 
-//        Function<RealVector, Double> objectiveFunc = vec -> {
-//            double x1 = vec.getEntry(0), x2 = vec.getEntry(1);
-//            return 100 * pow(x2 - pow(x1, 2.0), 2.0) + pow(1 - x1, 2.0);
-//        };
+        RealVector x0 = MatrixUtils.createRealVector(new double[]{10.0, -2.0});
+
+        RealVector sol = NelderMeadMethod.optimizeWithNelderMead(objectiveFunc, x0);
+        System.out.printf("x*=%s, f(x*)=%.3f", sol, objectiveFunc.apply(sol));
+
+        assertEquals(sol.getEntry(0), 1.0, 0.001);
+        assertEquals(sol.getEntry(1), 1.0, 0.001);
+    }
+
+    @Test
+    public void testOptimizeWithNelderMead2() {
+        Function<RealVector, Double> objectiveFunc = (vec) -> {
+            double x = vec.getEntry(0), y = vec.getEntry(1);
+            return pow(x, 2.0) + x * y + pow(y, 2.0) - 6.0 * x - 9.0 * y;
+        };
 
         RealVector x0 = MatrixUtils.createRealVector(new double[]{0.0, 0.0});
 
         RealVector sol = NelderMeadMethod.optimizeWithNelderMead(objectiveFunc, x0);
         System.out.printf("x*=%s, f(x*)=%.3f", sol, objectiveFunc.apply(sol));
 
-        assertEquals(sol.getEntry(0), 1.0, 0.96);
-        assertEquals(sol.getEntry(1), 4.0, 0.93);
+        assertEquals(objectiveFunc.apply(sol), -21.0, 0.1);
     }
 
     @Test

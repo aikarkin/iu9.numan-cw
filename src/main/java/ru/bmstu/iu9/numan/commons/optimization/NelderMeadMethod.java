@@ -29,17 +29,17 @@ public class NelderMeadMethod {
             gi = sortedDotsIndexes[1];
             hi = sortedDotsIndexes[2];
 
-            xc = findCenterOfMass(simplexDots, hi);
+            xc = getCenterOfMass(simplexDots, hi);
             xr = xc.add(xc.subtract(simplexDots[hi]).mapMultiply(ALPHA));
             fr = objectiveFunc.apply(xr);
 
             if (fr < fValues[li]) {
-                xe = xc.mapMultiply(1 - GAMMA).add(xr.mapMultiply(GAMMA));
+                xe = xc.subtract(xc.subtract(xr).mapMultiply(GAMMA));
                 fe = objectiveFunc.apply(xe);
 
-                if (fe < fr) {
-                    simplexDots[li] = xe;
-                    fValues[li] = fe;
+                if (fe < fValues[li]) {
+                    simplexDots[hi] = xe;
+                    fValues[hi] = fe;
                 } else {
                     simplexDots[hi] = xr;
                     fValues[hi] = fr;
@@ -49,7 +49,7 @@ public class NelderMeadMethod {
                 simplexDots[hi] = xr;
                 fValues[hi] = fr;
             }
-            if (fValues[gi] > fr && fr < fValues[hi]) {
+            if (fValues[gi] < fr && fr < fValues[hi]) {
                 simplexDots[hi] = swap(xr, xr = simplexDots[hi]);
                 fValues[hi] = swap(fr, fr = fValues[hi]);
                 shrinkRequired = true;
@@ -59,7 +59,7 @@ public class NelderMeadMethod {
             }
 
             if (shrinkRequired) {
-                xs = simplexDots[hi].mapMultiply(BETA).add(xc.mapMultiply(1 - BETA));
+                xs = xc.add(simplexDots[hi].subtract(xc).mapMultiply(BETA));
                 fs = objectiveFunc.apply(xs);
 
                 if (fs < fValues[hi]) {
@@ -86,7 +86,7 @@ public class NelderMeadMethod {
             }
 
             k++;
-            dist = findMaxEdgeLen(simplexDots);
+            dist = getMaxEdgeLen(simplexDots);
             der = standardDeviationOf(fValues, li);
         } while (k < MAX_ITERATIONS && dist > SIGMA && der > EPS);
 
@@ -101,21 +101,19 @@ public class NelderMeadMethod {
 
         for (int i = 0; i < fValues.length; i++) {
             if (fValues[i] > fValues[hi]) {
+                gi = hi;
                 hi = i;
             }
 
             if (fValues[i] < fValues[li]) {
-                gi = li;
                 li = i;
-            } else if (fValues[i] < fValues[gi]) {
-                gi = i;
             }
         }
 
         return new int[]{li, gi, hi};
     }
 
-    private static RealVector findCenterOfMass(RealVector[] dots, int skipIndex) {
+    private static RealVector getCenterOfMass(RealVector[] dots, int skipIndex) {
         int n = dots.length;
         RealVector xc = new ArrayRealVector(dots[0].getDimension(), 0.0);
 
@@ -127,7 +125,7 @@ public class NelderMeadMethod {
         return xc.mapMultiply(1.0 / (n - 1));
     }
 
-    private static double findMaxEdgeLen(RealVector[] dots) {
+    private static double getMaxEdgeLen(RealVector[] dots) {
         double dist, maxEdgeLen = 0.0;
 
         for (int i = 0; i < dots.length; i++) {

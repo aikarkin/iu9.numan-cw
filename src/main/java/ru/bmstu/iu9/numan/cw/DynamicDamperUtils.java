@@ -33,8 +33,8 @@ public class DynamicDamperUtils {
         return new ArrayRealVector(new double[]{
                 eta1,
                 eta2,
-                (2 * b1 * eta1 - 2 * c1 * xi1 + c2 * dXi + fA * cos(omega * t + alpha)) / m,
-                (b2 * eta2 - c2 * dXi) / m2
+                (-2 * b1 * eta1 - 2 * c1 * xi1 + c2 * dXi + fA * cos(omega * t + alpha)) / m,
+                (-b2 * eta2 - c2 * dXi) / m2
         });
     }
 }
