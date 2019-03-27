@@ -28,6 +28,9 @@ import static ru.bmstu.iu9.numan.cw.DynamicDamperUtils.getDeRhsVec;
 import static ru.bmstu.iu9.numan.cw.Const.Charts;
 
 public class FxWindows {
+    private static final double xAxisScale = 1.0;
+    private static final double yAxisScale = 2.0;
+
     public static void showConfigurationWindow() throws IOException {
         Stage stage = createStage(
                 "Параметры динамического гасителя колебаний",
@@ -73,10 +76,11 @@ public class FxWindows {
     @SuppressWarnings("unchecked")
     private static void drawChartsWithRungeKuttaMethod(double omega, double alpha, double fA, Scene scene, ChartType chartType, RealVector startParams, RealVector optimalParams) {
         ScatterChart<Number, Number> chart = (ScatterChart<Number, Number>) scene.lookup("#chart");
-        Function<RealVector, List<RealVector>> solutionFor = (params) ->  RungeKuttaAlgo.rungeKutta(
+        Function<RealVector, List<RealVector>> solutionFor = (params) ->  RungeKuttaAlgo.rungeKutta4thOrder(
                 (t, x) -> getDeRhsVec(t, omega, alpha, fA, params, x),
                 (time, prevVec, curVec) -> time - Charts.DURATION >= 0.0001,
                 new ArrayRealVector(4, 0.0),
+                0.0,
                 Charts.TIME_STEP
         );
 
@@ -102,13 +106,13 @@ public class FxWindows {
 
         xAxis.setLabel(chartType.xAxis());
         xAxis.setTickLabelRotation(-90.0);
-        setAxisUnits(xAxis, x);
+        setAxisUnits(xAxis, x, 0.01);
 
         yAxis.setLabel(chartType.yAxis());
-        setAxisUnits(yAxis, yStart);
+        setAxisUnits(yAxis, yStart, 0.001);
     }
 
-    private static void setAxisUnits(NumberAxis axis, double[] axisValues) {
+    private static void setAxisUnits(NumberAxis axis, double[] axisValues, double axisScale) {
         DoubleStream axisValuesStream = Arrays.stream(axisValues);
         OptionalDouble minOpt = axisValuesStream.min();
         axisValuesStream = Arrays.stream(axisValues);
@@ -129,8 +133,8 @@ public class FxWindows {
         axis.setAutoRanging(false);
         axis.setMinorTickVisible(false);
 
-        axis.setTickLabelGap(max / 5.0);
-        axis.setTickUnit(max / 10.0);
+        axis.setTickLabelGap(max * axisScale * 2.0);
+        axis.setTickUnit(max * axisScale);
     }
 
     private static void addDataSeries(ScatterChart<Number, Number> chart, String chartLabel, double[] x, double[] y) {

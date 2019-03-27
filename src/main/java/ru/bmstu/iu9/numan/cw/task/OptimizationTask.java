@@ -9,6 +9,7 @@ import ru.bmstu.iu9.numan.commons.rk.RungeKuttaAlgo;
 import ru.bmstu.iu9.numan.cw.controller.ConfigurationManager;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.lang.Math.abs;
@@ -28,29 +29,31 @@ public class OptimizationTask extends Task<Map<String, Object>> {
     @Override
     protected Map<String, Object> call() {
         RealVector startParams = new ArrayRealVector(new double[]{c.m1(), c.c1(), c.b1(), c.m2(), c.c2(), c.b2()});
+        final double startTime = DURATION / 2.0;
 
-        Function<RealVector, RealVector> findVecWithMaxCoord = (paramVec) -> {
+        BiFunction<RealVector, Integer, Double> findVecWithMaxCoord = (paramVec, coord) -> {
             ParamEq sdeRhs = (t, x) -> getDeRhsVec(t, c.omega(), c.alpha(), c.fA(), paramVec, x);
 
-            List<RealVector> rkSol = RungeKuttaAlgo.rungeKutta(
+            List<RealVector> rkSol = RungeKuttaAlgo.rungeKutta4thOrder(
                     sdeRhs,
-                    (time, prevVec, curVec) -> time - DURATION >= 0.0001,
-                    new ArrayRealVector(4, 0.0),
+                    (t, prev, cur) -> t - DURATION >= 0.0001,
+                     new ArrayRealVector(4, 0.0),
+                    0.0,
                     TIME_STEP
             );
 
-            double maxFuncVal = 0.0;
-            RealVector platformCoord = rkSol.get(0);
+            Optional<RealVector> max = rkSol.stream()
+                    .skip(rkSol.size() / 2)
+                    .max(Comparator.comparingDouble(vec -> abs(vec.getEntry(coord))));
 
-            for (RealVector vec : rkSol) {
-                if (abs(vec.getEntry(0)) > maxFuncVal) {
-                    maxFuncVal = abs(vec.getEntry(0));
-                    platformCoord = vec;
-                }
+            if(!max.isPresent()) {
+                throw new RuntimeException("Something goes wrong, RK4 method returned equal values");
             }
 
-            return platformCoord;
+            return max.get().getEntry(coord);
         };
+
+        double xi1Max = abs(findVecWithMaxCoord.apply(startParams, 0));
 
         List<Function<RealVector, Double>> constraints = Arrays.asList(
                 x -> -x.getEntry(0) + c.m1Min(),
@@ -71,7 +74,9 @@ public class OptimizationTask extends Task<Map<String, Object>> {
                 x -> -x.getEntry(5) + c.b2Min(),
                 x -> x.getEntry(5) - c.b2Max(),
                 // xi2
-                x -> findVecWithMaxCoord.apply(x).getEntry(1) - c.xi2Max()
+                x -> -abs(findVecWithMaxCoord.apply(x, 1)) + c.xi2Min(),
+                x -> abs(findVecWithMaxCoord.apply(x, 1)) - c.xi2Max(),
+                x -> abs(findVecWithMaxCoord.apply(x, 0)) - xi1Max
         );
 
         double[] coordSteps = new double[]{
@@ -87,14 +92,21 @@ public class OptimizationTask extends Task<Map<String, Object>> {
         for (int i = 0; i < constraints.size(); i++) {
             weights.add(2.0);
         }
-
+        weights.set(constraints.size() - 3, 2.0);
+        weights.set(constraints.size() - 2, 1.0);
         weights.set(constraints.size() - 1, 1.0);
+//        RealVector optimalParams = PenaltyMethod.optimizeWithPenaltyMethod(
+//                (vec) -> abs(findVecWithMaxCoord.apply(vec).getEntry(0)),
+//                constraints,
+//                weights,
+//                coordSteps,
+//                startParams
+//        );
 
-        RealVector optimalParams = PenaltyMethod.optimizeWithPenaltyMethod(
-                (vec) -> abs(findVecWithMaxCoord.apply(vec).getEntry(0)),
+        RealVector optimalParams = PenaltyMethod.optimizeWithPenaltyMethod2(
+                (vec) -> abs(findVecWithMaxCoord.apply(vec, 0)),
                 constraints,
                 weights,
-                coordSteps,
                 startParams
         );
 

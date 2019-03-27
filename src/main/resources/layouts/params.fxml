@@ -287,14 +287,20 @@
                             </GridPane.margin>
                         </TextField>
 
-                        <Label text="xi2 ≦ " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                        <!--fourth row-->
+                        <TextField maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.xi2.min" GridPane.columnIndex="2" GridPane.rowIndex="3" fx:id="xi2MinField" GridPane.columnSpan="3" GridPane.halignment="CENTER">
+                            <GridPane.margin>
+                                <Insets bottom="20.0" right="180.0" top="20.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text=" ≦ xi2 ≦ " GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.columnSpan="3">
                             <GridPane.margin>
                                 <Insets bottom="20.0" top="20.0" />
                             </GridPane.margin>
                         </Label>
-                        <TextField maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.xi2.max" GridPane.columnIndex="3" GridPane.rowIndex="3" fx:id="xi2MaxField">
+                        <TextField maxWidth="105.0" minWidth="105.0" text="%vibrationDamper.xi2.max" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.columnSpan="3" fx:id="xi2MaxField" GridPane.halignment="CENTER">
                             <GridPane.margin>
-                                <Insets bottom="20.0" right="20.0" top="20.0" />
+                                <Insets bottom="20.0" left="180.0" top="20.0" />
                             </GridPane.margin>
                         </TextField>
 

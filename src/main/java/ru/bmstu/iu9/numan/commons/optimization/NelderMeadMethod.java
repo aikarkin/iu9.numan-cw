@@ -10,27 +10,28 @@ import static ru.bmstu.iu9.numan.cw.Const.NelderMeadMethod.*;
 
 public class NelderMeadMethod {
 
-    public static RealVector optimizeWithNelderMead(Function<RealVector, Double> objectiveFunc, RealVector x0) {
-        System.out.println("Метод Нелдера-Мида");
-
+    public static RealVector optimizeWithNelderMead(
+            Function<RealVector, Double> objectiveFunc,
+            RealVector x0
+    ) {
         int n, hi, gi, li, k = 0;
         n = x0.getDimension();
         boolean shrinkRequired;
         double fr, fe, fs, dist, der;
-        RealVector[] simplexDots = createSimplex(x0, EDGE_LEN, n);
-        double[] fValues = getFuncValues(objectiveFunc, simplexDots);
-        int[] sortedDotsIndexes;
+        RealVector[] simplexVectors = createSimplex(x0, EDGE_LEN, n);
+        double[] fValues = getFuncValues(objectiveFunc, simplexVectors);
+        int[] sortedSimplexIndexes;
         RealVector xc, xr, xe, xs;
 
         do {
             shrinkRequired = false;
-            sortedDotsIndexes = getSortedDotsIndexes(fValues);
-            li = sortedDotsIndexes[0];
-            gi = sortedDotsIndexes[1];
-            hi = sortedDotsIndexes[2];
+            sortedSimplexIndexes = getSortedDotsIndexes(fValues);
+            li = sortedSimplexIndexes[0];
+            gi = sortedSimplexIndexes[1];
+            hi = sortedSimplexIndexes[2];
 
-            xc = getCenterOfMass(simplexDots, hi);
-            xr = xc.add(xc.subtract(simplexDots[hi]).mapMultiply(ALPHA));
+            xc = getCenterOfMass(simplexVectors, hi);
+            xr = xc.add(xc.subtract(simplexVectors[hi]).mapMultiply(ALPHA));
             fr = objectiveFunc.apply(xr);
 
             if (fr < fValues[li]) {
@@ -38,19 +39,20 @@ public class NelderMeadMethod {
                 fe = objectiveFunc.apply(xe);
 
                 if (fe < fValues[li]) {
-                    simplexDots[hi] = xe;
+                    simplexVectors[hi] = xe;
                     fValues[hi] = fe;
                 } else {
-                    simplexDots[hi] = xr;
+                    simplexVectors[hi] = xr;
                     fValues[hi] = fr;
                 }
             }
             if (fValues[li] < fr && fr < fValues[gi]) {
-                simplexDots[hi] = xr;
+                simplexVectors[hi] = xr;
                 fValues[hi] = fr;
             }
             if (fValues[gi] < fr && fr < fValues[hi]) {
-                simplexDots[hi] = swap(xr, xr = simplexDots[hi]);
+                // меняем местами xr и xh, fr и fh
+                simplexVectors[hi] = swap(xr, xr = simplexVectors[hi]);
                 fValues[hi] = swap(fr, fr = fValues[hi]);
                 shrinkRequired = true;
             }
@@ -59,40 +61,47 @@ public class NelderMeadMethod {
             }
 
             if (shrinkRequired) {
-                xs = xc.add(simplexDots[hi].subtract(xc).mapMultiply(BETA));
+                xs = xc
+                        .add(simplexVectors[hi].subtract(xc)
+                        .mapMultiply(BETA));
                 fs = objectiveFunc.apply(xs);
 
                 if (fs < fValues[hi]) {
-                    simplexDots[hi] = xs;
+                    simplexVectors[hi] = xs;
                     fValues[hi] = fs;
                 } else {
                     for (int i = 0; i < n + 1; i++) {
                         if (i != li) {
-                            simplexDots[i] = simplexDots[li].add(simplexDots[i].subtract(simplexDots[li]).mapMultiply(MU));
-                            fValues[i] = objectiveFunc.apply(simplexDots[i]);
+                            simplexVectors[i] = simplexVectors[li]
+                                    .add(simplexVectors[i].subtract(simplexVectors[li])
+                                            .mapMultiply(MU));
+                            fValues[i] = objectiveFunc.apply(simplexVectors[i]);
                         }
                     }
                 }
             }
 
             if (k > 0 && k % SIMPLEX_REPAIR_STEP == 0) {
-                double minAngle = findMinAngleBetweenAdjacentEdges(simplexDots);
+                double minAngle = findMinAngleBetweenAdjacentEdges(simplexVectors);
                 if (minAngle < PSI) {
-                    simplexDots = createSimplex(simplexDots[li], simplexDots[li].getDistance(simplexDots[gi]), n);
+                    simplexVectors = createSimplex(
+                            simplexVectors[li],
+                            simplexVectors[li].getDistance(simplexVectors[gi]),
+                            n
+                    );
                     for (int i = 0; i < n + 1; i++) {
-                        fValues[i] = objectiveFunc.apply(simplexDots[i]);
+                        fValues[i] = objectiveFunc.apply(simplexVectors[i]);
                     }
                 }
             }
 
             k++;
-            dist = getMaxEdgeLen(simplexDots);
+            dist = getMaxEdgeLen(simplexVectors);
             der = standardDeviationOf(fValues, li);
         } while (k < MAX_ITERATIONS && dist > SIGMA && der > EPS);
 
-        System.out.println("\t\t\t число итераци: " + k);
-
-        return simplexDots[li];
+        System.out.println("\t\tНМ - число итераций: " + k);
+        return simplexVectors[li];
     }
 
     public static int[] getSortedDotsIndexes(double[] fValues) {
@@ -113,24 +122,24 @@ public class NelderMeadMethod {
         return new int[]{li, gi, hi};
     }
 
-    private static RealVector getCenterOfMass(RealVector[] dots, int skipIndex) {
-        int n = dots.length;
-        RealVector xc = new ArrayRealVector(dots[0].getDimension(), 0.0);
+    private static RealVector getCenterOfMass(RealVector[] vectors, int skipIndex) {
+        int n = vectors.length;
+        RealVector xc = new ArrayRealVector(vectors[0].getDimension(), 0.0);
 
         for (int i = 0; i < n; i++) {
             if (i != skipIndex)
-                xc = xc.add(dots[i]);
+                xc = xc.add(vectors[i]);
         }
 
         return xc.mapMultiply(1.0 / (n - 1));
     }
 
-    private static double getMaxEdgeLen(RealVector[] dots) {
+    private static double getMaxEdgeLen(RealVector[] vectors) {
         double dist, maxEdgeLen = 0.0;
 
-        for (int i = 0; i < dots.length; i++) {
-            for (int j = i + 1; j < dots.length; j++) {
-                dist = dots[i].getDistance(dots[j]);
+        for (int i = 0; i < vectors.length; i++) {
+            for (int j = i + 1; j < vectors.length; j++) {
+                dist = vectors[i].getDistance(vectors[j]);
                 if (dist > maxEdgeLen) {
                     maxEdgeLen = dist;
                 }
@@ -140,19 +149,19 @@ public class NelderMeadMethod {
         return maxEdgeLen;
     }
 
-    private static double[] getFuncValues(Function<RealVector, Double> func, RealVector[] dots) {
-        double[] funcValues = new double[dots.length];
+    private static double[] getFuncValues(Function<RealVector, Double> func, RealVector[] vectors) {
+        double[] funcValues = new double[vectors.length];
 
-        for (int i = 0; i < dots.length; i++) {
-            funcValues[i] = func.apply(dots[i]);
+        for (int i = 0; i < vectors.length; i++) {
+            funcValues[i] = func.apply(vectors[i]);
         }
 
         return funcValues;
     }
 
     // returns angle in radians
-    private static double findMinAngleBetweenAdjacentEdges(RealVector[] dots) {
-        int n = dots.length;
+    private static double findMinAngleBetweenAdjacentEdges(RealVector[] vectors) {
+        int n = vectors.length;
         double minAngle = Double.MAX_VALUE, angle;
 
         for (int i = 0; i < n; i++) {
@@ -160,8 +169,8 @@ public class NelderMeadMethod {
                 for (int k = 0; k < n; k++) {
                     if (i != j && j != k && k != i) {
                         angle = acos(
-                                dots[j].subtract(dots[k]).dotProduct(dots[j].subtract(dots[k]))
-                                        / (dots[i].getDistance(dots[k]) * dots[j].getDistance(dots[k]))
+                                vectors[j].subtract(vectors[k]).dotProduct(vectors[j].subtract(vectors[k]))
+                                        / (vectors[i].getDistance(vectors[k]) * vectors[j].getDistance(vectors[k]))
                         );
                         if (angle < minAngle) {
                             minAngle = angle;
@@ -191,18 +200,18 @@ public class NelderMeadMethod {
     private static RealVector[] createSimplex(RealVector x0, double edgeLen, int dim) {
         double l1 = edgeLen / (dim * sqrt(2.0)) * (sqrt(dim + 1) + dim - 1.0);
         double l2 = edgeLen / (dim * sqrt(2.0)) * (sqrt(dim + 1) - 1.0);
-        RealVector[] dots = new RealVector[dim + 1];
+        RealVector[] vectors = new RealVector[dim + 1];
         RealVector lVec;
-        dots[0] = x0;
+        vectors[0] = x0;
 
         for (int i = 1; i < dim + 1; i++) {
             lVec = new ArrayRealVector(dim, l2);
             lVec.setEntry(i - 1, l1);
 
-            dots[i] = x0.add(lVec);
+            vectors[i] = x0.add(lVec);
         }
 
-        return dots;
+        return vectors;
     }
 
     private static <T> T swap(T a, T b) {

@@ -3,19 +3,25 @@ package ru.bmstu.iu9.numan.commons.rk;
 import org.apache.commons.math3.linear.RealVector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RungeKuttaAlgo {
-    public static List<RealVector> rungeKutta(ParamEq f, RungeKuttaPredicate exitPredicate, RealVector y0, double dt) {
+    public static List<RealVector> rungeKutta4thOrder(
+            ParamEq f,
+            RungeKuttaPredicate terminatePredicate,
+            RealVector y0,
+            double t0,
+            double dt
+    ) {
         RealVector k1, k2, k3, k4;
-        ArrayList<RealVector> yArr = new ArrayList<>();
-        yArr.add(y0);
+        ArrayList<RealVector> yArr = new ArrayList<>(Collections.singletonList(y0));
         double t;
 
         int i = 0;
 
         do {
-            t = i * dt;
+            t = t0 + i * dt;
             RealVector yn = yArr.get(i);
 
             k1 = f.apply(t, yn).mapMultiply(dt);
@@ -35,9 +41,7 @@ public class RungeKuttaAlgo {
                     )
             );
             i++;
-        } while (!exitPredicate.apply(t, yArr.get(i - 1), yArr.get(i)));
-
-//        res.remove(i);
+        } while (!terminatePredicate.apply(t, yArr.get(i - 1), yArr.get(i)));
 
         return yArr;
     }

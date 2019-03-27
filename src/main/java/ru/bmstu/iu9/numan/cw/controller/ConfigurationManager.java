@@ -55,6 +55,8 @@ public class ConfigurationManager {
     @FXML
     private TextField c2MaxField;
     @FXML
+    private TextField xi2MinField;
+    @FXML
     private ProgressIndicator progressSpinner;
     @FXML
     private GridPane mainPane;
@@ -175,6 +177,10 @@ public class ConfigurationManager {
 
     public double xi2Max() {
         return getFieldValue(xi2MaxField);
+    }
+
+    public double xi2Min() {
+        return getFieldValue(xi2MinField);
     }
 
     private static double getFieldValue(TextField textField) {
